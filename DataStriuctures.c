@@ -1,73 +1,117 @@
+// C Program to insert the node at the beginning of
+// Linked List
+
 #include <stdio.h>
 #include <stdlib.h>
 
-struct node {
-
-
-    int data1;
-    int data2;
-    struct node *link;
+// Define a node in the linked list
+struct Node
+{
+    int data;          // Data stored in the node
+    struct Node *next; // Pointer to the next node in the list
 };
 
+// Function to create a new node with the given data
+struct Node *createNode(int new_data) // returns a pointer to a node
+{
+    // Allocate memory for a new node
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
 
-int countnodes(struct node *head){
-    int count=0;
-    struct node *check = head;     //tesst pointer initialized to head.
+    // Initialize the node's data
+    new_node->data = new_data;
 
-    while(check !=NULL){          //check if we have found the end
-        count++;
-        check=check->link;       //decend check will point to the second node now and so on.
+    // Set the next pointer to NULL
+    new_node->next = NULL;
+
+    // Return the newly created node
+    return new_node;
+}
+
+// Function to insert a new node at the beginning of the
+// list
+struct Node *insertAtFront(struct Node *head, int new_data)
+{
+    // Create a new node with the given data
+    struct Node *new_node = createNode(new_data);
+
+    // Make the next of the new node point to the current
+    // head
+    new_node->next = head;
+
+    // Return the new node as the new head of the list
+    return new_node;
+}
+
+struct Node *insertAtEnd(struct Node *head, int new_data)
+{
+    // Create a new node with the given data
+    struct Node *new_node = createNode(new_data);
+
+    // If the list is empty, the new node becomes the head
+    if (head == NULL)
+        return new_node;
+
+    // Traverse the list to find the last node
+    struct Node *current = head;
+    while (current->next != NULL)
+    {
+        current = current->next;
     }
 
-    printf("%d",count);
+    // Attach the new node at the end of the list
+    current->next = new_node;
+
+    // Return the head pointer (unchanged)
+    return head;
 }
 
+// Function to print the contents of the linked list
+void printList(struct Node *head)
+{
+    // Start from the head of the list
+    struct Node *curr = head;
 
-void add_at_end(struct node *head, int data){
+    // Traverse the list
+    while (curr != NULL)
+    {
+        // Print the current node's data
+        printf(" %d", curr->data);
 
-    struct node *check = head;     //tesst pointer initialized to head.
-    struct node *temp = (struct node*)malloc(sizeof(struct node));
-
-    temp -> data1= data;
-    temp -> link = NULL;
-
-    while(check !=NULL){          //check if we have found the end
-        check=check->link;       //decend check will point to the second node now and so on.
+        // Move to the next node
+        curr = curr->next;
     }
 
-    check -> link = temp;
+    // Print a newline at the end
+    printf("\n");
 }
 
+// Driver code to test the functions
+int main()
+{
+    // Create the linked list 2->3->4->5
+    struct Node *head = createNode(2);
+    head->next = createNode(3);
+    head->next->next = createNode(4);
+    head->next->next->next = createNode(5);
 
-int main(){
+    // Print the original list
+    printf("Original Linked List:");
+    printList(head);
 
-struct node  *head = (struct node *)malloc(sizeof(struct node));                       // pointer to 1st node struct node and allocate memory 
-head -> data1 =45;
-head -> link = NULL;
+    // Insert a new node at the front of the list
+    printf("After inserting Nodes at the front:");
+    int data = 1;
+    head = insertAtFront(head, data);
 
-struct node  *point = (struct node *)malloc(sizeof(struct node));                       // pointer to 2nd node struct node and allocate memory 
-head -> data1 =60;
-point -> link = NULL;
-head -> link = point;
+    // Print the updated list
+    printList(head);
 
-point = (struct node *)malloc(sizeof(struct node));                                      // same pointer used to allocate memory for 3rd node
-head -> data1 =80;
-point -> link = NULL;
-head -> link -> link = point;                                                           // store the address of the 3rd node in the link of the 2nd node 
+    printf("After inserting Nodes at the End:");
+    int data1 = 5;
+    head = insertAtEnd(head, data1);
 
-point = (struct node *)malloc(sizeof(struct node));  
-head -> data1 =100;
-point -> link = NULL;
-head -> link -> link -> link = point;  
+    // Print the updated list
+    printList(head);
 
-
-
-//stack
-
-struct node  *newnode = (struct node *)malloc(sizeof(struct node));                       // pointer to 2nd node struct node and allocate memory 
-
-
-
-countnodes(head);
+    return 0;
 }
-
